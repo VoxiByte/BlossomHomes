@@ -1,9 +1,9 @@
 ﻿{
-  "blossom.homes.list.empty": "你目前擁有 0/%s 個家。",
-  "blossom.homes.list.header": "你目前擁有 %s/%s 個家：\n",
+  "blossom.homes.list.empty": "你當前擁有 0/%s 個家.",
+  "blossom.homes.list.header": "你當前擁有 %s/%s 個家:\n",
   "blossom.homes.list.item": "%s",
-  "blossom.homes.list.item.description": "x：%3$s；y：%4$s；z：%5$s\n頭部水平偏擺角：%6$s；頭部垂直俯仰角：%7$s",
-  "blossom.homes.list.item.before": "－",
+  "blossom.homes.list.item.description": "x: %3$s; y: %4$s; z: %5$s\n頭部水準偏航: %6$s; 頭部垂直俯仰: %7$s",
+  "blossom.homes.list.item.before": "- ",
   "blossom.homes.list.item.after": "",
   "blossom.homes.not-found": "家「%s」並不存在！",
   "blossom.homes.add": "家「%s」已成功設置！",
@@ -18,5 +18,6 @@
   "blossom.homes.load-legacy.overwrite": "正在覆寫已有的家",
   "blossom.homes.load-legacy.done": "載入完成！已載入 %s 個家（來自 %s 名玩家）。",
   "blossom.homes.spawn.not-found": "未找到有效的重生點備援！",
-  "blossom.homes.spawn": "正在傳送至重生點！"
+  "blossom.homes.spawn": "正在傳送至重生點！",
+  "blossom.homes.too-many": "Cincinciunpam!"
 }

@@ -6,7 +6,13 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.codedsakura.blossom.lib.data.ListDataController;
+import dev.codedsakura.blossom.lib.permissions.Permissions;
 import dev.codedsakura.blossom.lib.teleport.TeleportUtils;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.PermissionNode;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -16,6 +22,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -147,15 +154,7 @@ public class HomeController extends ListDataController<PlayerWithHomes> implemen
     }
 
     int getMaxHomes(ServerPlayerEntity player) {
-        UUID uuid = player.getUuid();
-
-        for (PlayerWithHomes playerWithHomes : data) {
-            if (playerWithHomes.uuid.equals(uuid)) {
-                return playerWithHomes.maxHomes;
-            }
-        }
-
-        return BlossomHomes.CONFIG.startHomes;
+        return LuckpermsHook.getMaxHomes(player);
     }
 
     void setMaxHomes(ServerPlayerEntity player, int newMaxHomes) {
@@ -186,6 +185,7 @@ public class HomeController extends ListDataController<PlayerWithHomes> implemen
         if (homes.size() + 1 > getMaxHomes(player)) {
             return AddHomeResult.NOT_ENOUGH_HOMES;
         }
+
         if (homes.stream().map(v -> v.name).anyMatch(v -> v.equals(home.name))) {
             return AddHomeResult.NAME_TAKEN;
         }
