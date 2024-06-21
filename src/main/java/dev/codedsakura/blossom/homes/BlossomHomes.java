@@ -146,7 +146,7 @@ public class BlossomHomes implements ModInitializer {
         List<Home> homes = homeController.findPlayerHomes(player);
 
         if (homes.isEmpty()) {
-            TextUtils.send(ctx, "blossom.homes.list.empty", homeController.getMaxHomes(player));
+            TextUtils.send(ctx, "blossom.homes.list.empty", Math.max(0, homeController.getMaxHomes(player)));
             return Command.SINGLE_SUCCESS;
         }
 
@@ -164,7 +164,7 @@ public class BlossomHomes implements ModInitializer {
                 .collect(JoiningCollector.collector(MutableText::append, Text.literal("\n")));
 
         ctx.getSource().sendFeedback(() ->
-                TextUtils.translation("blossom.homes.list.header", homes.size(), homeController.getMaxHomes(player))
+                TextUtils.translation("blossom.homes.list.header", homes.size(), Math.max(0, homeController.getMaxHomes(player)))
                         .append(result),
                 false
         );
@@ -178,6 +178,12 @@ public class BlossomHomes implements ModInitializer {
         Home home = homeController.findHome(player, homeName);
 
         LOGGER.trace("home player {} to {}", player, home);
+
+        int maxPermissionsHome = LuckpermsHook.getMaxHomes(player);
+        if(homeController.findPlayerHomes(player).size() > maxPermissionsHome) {
+            TextUtils.sendErr(ctx, "blossom.homes.too-many", homeName);
+            return Command.SINGLE_SUCCESS;
+        }
 
         if (home == null) {
             if (!(homeName.equals(CONFIG.defaultHome) && CONFIG.fallbackToPlayerSpawnPoint)) {
@@ -263,7 +269,7 @@ public class BlossomHomes implements ModInitializer {
         switch (result) {
             case SUCCESS -> TextUtils.sendSuccess(ctx, "blossom.homes.add", home.name);
             case NOT_ENOUGH_HOMES ->
-                    TextUtils.sendErr(ctx, "blossom.homes.add.failed.max", homeController.getMaxHomes(player));
+                    TextUtils.sendErr(ctx, "blossom.homes.add.failed.max", Math.max(0, homeController.getMaxHomes(player)));
             case NAME_TAKEN -> TextUtils.sendErr(ctx, "blossom.homes.add.failed.name", home.name);
         }
 
